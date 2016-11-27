@@ -2,8 +2,8 @@
 *.exe
 *.dll
 *.pdb
-Distributor/bin/Debug/
-Distributor/obj/Debug/
-Distributor/bin/Release/
-Distributor/obj/Release/
+*/bin/Debug/
+*/obj/Debug/
+*/bin/Release/
+*/obj/Release/
 packages
