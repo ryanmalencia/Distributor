@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Diagnostics;
 using WebAPIClient.APICalls;
 using DataTypes;
 
@@ -17,12 +12,19 @@ namespace Distributor
             while(true)
             {
                 Console.WriteLine("Distributing jobs...");
-                AgentCollection agents = AgentAPI.GetAllAgents();
-                foreach(Agent agent in agents.machines)
+
+                AgentCollection agents = AgentAPI.GetIdleAgents();
+
+                foreach (Agent agent in agents.machines)
                 {
-                    if (agent.IsIdle())
+                    JobCollection jobs = JobAPI.GetAllJobs();
+                    foreach (Job job in jobs.Jobs)
                     {
-                        DistributorLogic.SendJob(agent);
+                        if (agent.IsIdle() && job.Distributed == 0)
+                        {
+                            DistributorLogic.SendJob(agent, job);
+                            break;
+                        }
                     }
                 }
                 Thread.Sleep(10000);
