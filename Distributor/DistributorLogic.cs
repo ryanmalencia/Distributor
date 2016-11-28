@@ -34,6 +34,7 @@ namespace Distributor
                 catch (Exception)
                 {
                     AgentAPI.SetDead(agent.Name);
+                    JobAPI.ResetJob(job);
                     Console.WriteLine("Agent " + agent.Name + " may not be running");
                 }
             }

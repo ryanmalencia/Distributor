@@ -14,15 +14,15 @@ namespace Distributor
                 Console.WriteLine("Distributing jobs...");
 
                 AgentCollection agents = AgentAPI.GetIdleAgents();
-
+                JobCollection jobs = JobAPI.GetAllJobs();
                 foreach (Agent agent in agents.machines)
                 {
-                    JobCollection jobs = JobAPI.GetAllJobs();
                     foreach (Job job in jobs.Jobs)
                     {
                         if (agent.IsIdle() && job.Distributed == 0)
                         {
                             DistributorLogic.SendJob(agent, job);
+                            job.Distributed = 1;
                             break;
                         }
                     }
