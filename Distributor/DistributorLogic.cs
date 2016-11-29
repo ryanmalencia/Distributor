@@ -28,7 +28,7 @@ namespace Distributor
                 try
                 {
                     client.Headers.Add("content-type", "application/json");
-                    client.UploadString("http://" + agent.IP + "/api/machine/give", "PUT",info.Split('?')[1]);
+                    client.UploadString("http://" + agent.IP + "/api/machine/give/" + job.pk_job, "PUT", "");
                     JobAPI.SetJobDist(job);
                 }
                 catch (Exception)
