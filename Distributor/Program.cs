@@ -15,6 +15,7 @@ namespace Distributor
 
                 AgentCollection agents = AgentAPI.GetIdleAgents();
                 JobCollection jobs = JobAPI.GetAllJobs();
+                jobs.Jobs.Sort();
                 foreach (Agent agent in agents.machines)
                 {
                     foreach (Job job in jobs.Jobs)
