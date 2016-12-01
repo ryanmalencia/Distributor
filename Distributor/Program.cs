@@ -21,7 +21,7 @@ namespace Distributor
                     {
                         if (agent.IsIdle() && job.Distributed == 0)
                         {
-                            if (job.Last_Finished > job.Last_Distributed)
+                            if (job.Last_Finished >= job.Last_Distributed)
                             {
                                 DistributorLogic.SendJob(agent, job);
                                 job.Distributed = 1;
