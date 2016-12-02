@@ -17,15 +17,18 @@ namespace Distributor
                 jobs.Jobs.Sort();
                 foreach (Agent agent in agents.machines)
                 {
-                    foreach (Job job in jobs.Jobs)
+                    if (agent.IsIdle())
                     {
-                        if (agent.IsIdle() && job.Distributed == 0)
+                        foreach (Job job in jobs.Jobs)
                         {
-                            if (job.Last_Finished >= job.Last_Distributed)
+                            if (job.Distributed == 0)
                             {
-                                DistributorLogic.SendJob(agent, job);
-                                job.Distributed = 1;
-                                break;
+                                if (job.Last_Finished >= job.Last_Distributed)
+                                {
+                                    DistributorLogic.SendJob(agent, job);
+                                    job.Distributed = 1;
+                                    break;
+                                }
                             }
                         }
                     }
