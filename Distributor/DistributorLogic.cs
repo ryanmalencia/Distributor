@@ -18,7 +18,7 @@ namespace Distributor
             thread.Start(jobinfo);
         }
 
-        public static void SendTheJob(object jobinfo)
+        private static void SendTheJob(object jobinfo)
         {
             string info = (string)jobinfo;
             Agent agent = JsonConvert.DeserializeObject<Agent>(info.Split('?')[0]);
@@ -38,6 +38,54 @@ namespace Distributor
                     Console.WriteLine("Agent " + agent.Name + " may not be running");
                 }
             }
+        }
+        
+        public static void CheckAgent(Agent agent)
+        {
+            Thread thread = new Thread(CheckTheAgent);
+            thread.Start(agent);
+        }
+
+        private static void CheckTheAgent(object agent)
+        {
+            Agent theagent = (Agent)agent;
+            using (var client = new WebClient())
+            {
+                try
+                {
+                    client.Headers.Add("content-type", "application/json");
+                    client.DownloadData("http://" + theagent.IP + "/api/machine/getstatus");
+                }
+                catch (Exception)
+                {
+                    AgentAPI.SetDead(theagent.Name);
+                    if (theagent.fk_job != 0)
+                    {
+                        JobAPI.ResetJob(JobAPI.GetByPk(theagent.fk_job));
+                    }
+                    Console.WriteLine("Agent " + theagent.Name + " may not be running");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Get All Agents
+        /// </summary>
+        /// <returns>Agent Collection of Idle Agents</returns>
+        public static AgentCollection GetAgents()
+        {
+            return AgentAPI.GetAllAgents();
+        }
+
+        /// <summary>
+        /// Get all jobs
+        /// </summary>
+        /// <returns>Sorted Job Collection</returns>
+        public static JobCollection GetJobs()
+        {
+            JobCollection jobs = JobAPI.GetAllJobs();
+            jobs.Jobs.Sort();
+            return jobs;
         }
     }
 }

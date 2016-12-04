@@ -12,9 +12,8 @@ namespace Distributor
             while(true)
             {
                 Console.WriteLine("Distributing jobs...");
-                AgentCollection agents = AgentAPI.GetIdleAgents();
-                JobCollection jobs = JobAPI.GetAllJobs();
-                jobs.Jobs.Sort();
+                AgentCollection agents = DistributorLogic.GetAgents();
+                JobCollection jobs = DistributorLogic.GetJobs();
                 foreach (Agent agent in agents.machines)
                 {
                     if (agent.IsIdle())
@@ -23,7 +22,13 @@ namespace Distributor
                         {
                             if (job.Distributed == 0)
                             {
-                                if (job.Last_Finished >= job.Last_Distributed)
+                                DistributorLogic.SendJob(agent, job);
+                                job.Distributed = 1;
+                                break;
+                            }
+                            else
+                            {
+                                if (job.Started == 0)
                                 {
                                     DistributorLogic.SendJob(agent, job);
                                     job.Distributed = 1;
@@ -32,9 +37,13 @@ namespace Distributor
                             }
                         }
                     }
+                    else if(!agent.IsDead())
+                    {
+                        DistributorLogic.CheckAgent(agent);
+                    }
                 }
-                Console.WriteLine("Done Distributing. Redistributing in 10 seconds.");
-                Thread.Sleep(10000);
+                Console.WriteLine("Done Distributing. Redistributing in 1 seconds.");
+                Thread.Sleep(1000);
             }
         }
     }
