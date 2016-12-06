@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading;
-using WebAPIClient.APICalls;
 using DataTypes;
 
 namespace Distributor
@@ -11,6 +11,8 @@ namespace Distributor
         {
             while(true)
             {
+                Stopwatch watch = new Stopwatch();
+                watch.Start();
                 Console.WriteLine("Distributing jobs...");
                 AgentCollection agents = DistributorLogic.GetAgents();
                 JobCollection jobs = DistributorLogic.GetJobs();
@@ -42,8 +44,10 @@ namespace Distributor
                         DistributorLogic.CheckAgent(agent);
                     }
                 }
-                Console.WriteLine("Done Distributing. Redistributing in 1 seconds.");
-                Thread.Sleep(1000);
+                watch.Stop();
+                Console.WriteLine("Done Distributing. Redistributing in 10 seconds.");
+                Console.WriteLine(watch.Elapsed.TotalSeconds + " Seconds to Distribute");
+                Thread.Sleep(10000);
             }
         }
     }
