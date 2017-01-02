@@ -16,7 +16,7 @@ namespace Distributor
                 Console.WriteLine("Distributing jobs...");
                 AgentCollection agents = DistributorLogic.GetAgents();
                 JobCollection jobs = DistributorLogic.GetJobs();
-                foreach (Agent agent in agents.machines)
+                foreach (Agent agent in agents.Agents)
                 {
                     if (agent.IsIdle())
                     {
