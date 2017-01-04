@@ -61,7 +61,7 @@ namespace Distributor
                     AgentAPI.SetDead(theagent.Name);
                     if (theagent.fk_job != 0)
                     {
-                        JobAPI.ResetJob(JobAPI.GetByPk(theagent.fk_job));
+                        JobAPI.ResetJob(JobAPI.GetById(theagent.fk_job));
                     }
                     Console.WriteLine("Agent " + theagent.Name + " may not be running");
                 }
