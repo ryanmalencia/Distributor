@@ -7,5 +7,4 @@
 */bin/Release/
 */obj/Release/
 packages
-db.lock
-storage.ide
+.vs/Distributor
