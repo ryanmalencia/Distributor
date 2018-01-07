@@ -83,7 +83,7 @@ namespace Distributor
         /// <returns>Sorted Job Collection</returns>
         public static JobCollection GetJobs()
         {
-            JobCollection jobs = JobAPI.GetAllJobs();
+            JobCollection jobs = JobAPI.GetJobsToRun();
             jobs.Jobs.Sort();
             return jobs;
         }
